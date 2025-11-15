@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/fragments::head(#{lt.lietuvosGamta.blog.create.post.head.title})">
+</head>
+
+<body style="background-color: black">
+<div class="container-sm">
+
+    <nav th:replace="fragments/fragments::navigation"></nav>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 th:text="#{lt.lietuvosGamta.blog.create.post.title}" class="card-title"></h3>
+
+            <form method="post" th:object="${post}" style="margin-bottom: 2rem" th:action="@{/blog/create}">
+                <div>
+                    <div class="mb-3">
+                        <label th:text="#{lt.lietuvosGamta.blog.create.post.header}" for="header"
+                               class="form-label"></label>
+                        <input type="text" class="form-control" id="header" th:field="*{postName}" required>
+                    </div>
+                    <div th:if="${#fields.hasErrors('postName')}" th:errors="*{postName}" class="invalid-feedback">
+                    </div>
+                    <div class="mb-3">
+                        <label th:text="#{lt.lietuvosGamta.blog.create.post.text}" for="PostText"
+                               class="form-label"></label>
+                        <textarea class="form-control" id="PostText" rows="3" th:field="*{postText}"
+                                  required></textarea>
+                    </div>
+                    <div th:if="${#fields.hasErrors('postText')}" th:errors="*{postText}" class="invalid-feedback">
+                    </div>
+                    <div class="mb-3">
+                        <label th:text="#{lt.lietuvosGamta.blog.create.post.picture}" for="pictureLink"
+                               class="form-label"></label>
+                        <input type="text" class="form-control" id="pictureLink" th:field="*{picture}">
+                    </div>
+                    <button th:text="#{lt.lietuvosGamta.blog.create.post.button}" type="submit"
+                            class="btn btn-warning"></button>
+                    <h4 th:if="${message}" th:text="${message}"></h4>
+                </div>
+            </form>
+
+
+        </div>
+        <img src="https://cdn.mos.cms.futurecdn.net/nz8MsHam4uo9cxxCxnbTZ-970-80.jpg.webp" class="card-img-bottom"
+             alt="...">
+    </div>
+
+
+</div>
+<footer th:replace="fragments/fragments::footer"></footer>
+
+</body>
+</html>

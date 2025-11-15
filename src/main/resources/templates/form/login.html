@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/fragments::head(LOGIN)"></head>
+<body style="background-color: black">
+<div class="container-sm">
+    <nav th:replace="fragments/fragments::navigation"></nav>
+
+    <div class="card">
+        <div class="card-body">
+            <h2 th:text="#{lt.lietuvosGamta.login.header}"></h2>
+            <div th:if="${param.error ne null}" class="alert alert-danger" role="alert">
+                WRONG USERNAME OR PASSWORD
+            </div>
+            <form method="post" th:action="@{/login}">
+                <input class="form-control form-control-lg" type="text" name="username" placeholder="Username"
+                       aria-label=".form-control-lg example">
+                <input class="form-control form-control-lg" type="password" name="password" placeholder="Password"
+                       style="margin-bottom: 1.2rem" aria-label=".form-control-lg example">
+                <button type="submit" class="btn btn-dark" th:text="#{lt.lietuvosGamta.login.button}">LOG IN</button>
+            </form>
+        </div>
+    </div>
+    <img src="https://www.china-ceecforestry.org/wp-content/uploads/2020/06/Lit-main.jpg"
+         class="card-img-bottom" alt="MTB XC">
+</div>
+
+<footer th:replace="fragments/fragments::footer"></footer>
+
+</body>
+</html>

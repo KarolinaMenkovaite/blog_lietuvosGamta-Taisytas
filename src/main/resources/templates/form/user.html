@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/fragments::head(#{lt.lietuvosGamta.user.create.title})">
+</head>
+
+<body style="background-color: black">
+<div class="container-sm">
+
+    <nav th:replace="fragments/fragments::navigation"></nav>
+
+    <div class="card mb-3">
+
+        <div class="card-body">
+            <h3 th:text="#{lt.lietuvosGamta.user.header}"><strong></strong></h3>
+            <form method="post" th:object="${user}" class="row g-3" th:action="@{/public/user/create}">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}" />
+                <div th:replace="fragments/fragments::inputWithError('name', 'Name:', ${user.name ne null}, 'text')"></div>
+                <div th:replace="fragments/fragments::inputWithError('surname', 'Surname:', ${user.surname ne null}, 'text')"></div>
+                <div th:replace="fragments/fragments::inputWithError('username', 'Username:', ${user.username ne null},'text')"></div>
+                <div th:replace="fragments/fragments::inputWithError('email', 'Email:', ${user.email ne null}, 'email')"></div>
+
+                <div class="mb-3">
+                    <label for="password"
+                           class="form-label">Password:</label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           aria-describedby="passwordFeedback"
+                           th:classappend="${#fields.hasErrors('password') || #fields.hasErrors('global')} ? 'is-invalid' : (${user.password ne null} ? 'is-valid' : '')"
+                           th:field="*{password}" required>
+                    <div id="passwordFeedback"
+                         class="invalid-feedback">
+                        <div th:if="${#fields.hasErrors('password')}"
+                             th:errors="*{password}"></div>
+                        <div th:if="${#fields.hasErrors('global')}"
+                             th:errors="*{global}"></div>
+                    </div>
+
+                    <label for="repeatPassword"
+                           class="form-label">Repeat password:</label>
+                    <input type="password"
+                           class="form-control"
+                           id="repeatPassword"
+                           aria-describedby="repeatPasswordFeedback"
+                           th:classappend="${#fields.hasErrors('repeatPassword') || #fields.hasErrors('global')} ? 'is-invalid' : (${user.repeatPassword ne null} ? 'is-valid' : '')"
+                           th:field="*{repeatPassword}" required>
+                    <div id="repeatPasswordFeedback"
+                         class="invalid-feedback">
+                        <div th:if="${#fields.hasErrors('repeatPassword')}"
+                             th:errors="*{repeatPassword}"></div>
+                        <div th:if="${#fields.hasErrors('global')}"
+                             th:errors="*{global}"></div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button th:text="#{lt.lietuvosGamta.user.button}"
+                            class="btn btn-outline-success" type="submit"></button>
+                </div>
+            </form>
+        </div>
+        <img src="https://wallpaperaccess.com/full/442129.jpg"
+             class="card-img-bottom" alt="picture">
+    </div>
+</div>
+<footer th:replace="fragments/fragments::footer"></footer>
+</body>
+</html>

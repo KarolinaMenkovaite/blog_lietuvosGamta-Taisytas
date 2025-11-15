@@ -1,0 +1,6 @@
+projectKey=QuizWebJava
+serverUrl=http://localhost:9000
+serverVersion=25.2.0.102705
+dashboardUrl=http://localhost:9000/dashboard?id=QuizWebJava
+ceTaskId=b89272b5-8f60-4cef-9cc3-5553e16c8bb9
+ceTaskUrl=http://localhost:9000/api/ce/task?id=b89272b5-8f60-4cef-9cc3-5553e16c8bb9

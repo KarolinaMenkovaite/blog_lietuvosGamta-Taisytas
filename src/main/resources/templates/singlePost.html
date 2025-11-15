@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/fragments::head(#{lt.lietuvosGamta.blog.single.post.head.title})"></head>
+
+<body style="background-color: black">
+
+<div class="container-sm" th:if="${post ne null}">
+
+    <nav th:replace="fragments/fragments::navigation"></nav>
+
+    <div class="card mb-3" style="max-width: 1400px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img th:src="${post.picture}" class="img-fluid rounded-start" alt="post picture">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title" th:text="${post.postName}"></h3>
+                    <p class="card-text" th:text="${post.postText}"></p>
+                    <p class="card-text"><small class="text-body-secondary" th:text="${post.postDate}"></small></p>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:text="#{lt.lietuvosGamta.blog.single.post.button.update}"
+                       th:href="@{/blog/{postId}/update(postId=${post.id})}" class="btn btn-outline-secondary"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <form sec:authorize="hasRole('ROLE_USER')" method="post" th:object="${comment}"
+          th:action="@{/blog/{postId}/newComment(postId=${post.id})}">
+        <div class="mb-3">
+            <label th:text="#{lt.lietuvosGamta.blog.single.post.comment.header}" for="comment" class="form-label"
+                   style="color: azure"></label>
+            <textarea class="form-control" id="comment" rows="3"
+                      th:placeholder="#{lt.lietuvosGamta.blog.single.post.comment.placeholder}"
+                      th:field="*{commentText}"></textarea>
+            <input type="hidden" name="username" th:value="${#authentication.principal.username}">
+        </div>
+        <button th:text="#{lt.lietuvosGamta.blog.single.post.button.comment}" type="submit"
+                class="btn btn-outline-light" style="margin-bottom: 1.5rem"></button>
+
+    </form>
+
+    <div th:unless="${#lists.isEmpty(post.comments)}">
+
+        <div class="card" th:each=" comment : ${post.comments}" style="margin-bottom: 1rem">
+            <h5 class="card-header" th:text="${comment.username}"></h5>
+            <div class="card-body">
+                <p class="card-title" th:text="${comment.commentText}"></p>
+                <p class="card-text" th:text="${comment.dateTime}"></p>
+                <div sec:authorize="isAuthenticated()">
+                    <a th:if="${#authentication.principal.username.equals(comment.username)}"
+                       th:text="#{lt.lietuvosGamta.blog.single.post.button.delete}"
+                       th:href="@{/blog/{postId}/delete/{commentId}(postId=${post.id}, commentId=${comment.id})}"
+                       class="btn btn btn-danger btn-sm "></a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<footer th:replace="fragments/fragments::footer"></footer>
+
+
+</body>
+</html>

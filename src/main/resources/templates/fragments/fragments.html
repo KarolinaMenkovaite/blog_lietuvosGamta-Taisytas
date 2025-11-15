@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <title th:text="${title}"></title>
+</head>
+<body>
+
+<nav th:fragment="navigation" class="navbar navbar-dark bg-secondary" data-bs-theme="dark">
+
+    <div class="container-fluid" style="color: darkgrey">
+        <div>
+            <span>  </span>
+            <svg xmlns="http://www.w3.org/2000/svg" color="white" width="40" height="40" fill="currentColor"
+                 class="fa fa-tree" viewBox="0 0 25 25">
+                <path d="M14 11s6.054-1.05 6-4.5c-.038-2.324-2.485-3.19-3.016-1.5c0 0-.502-2-2.01-2c-1.508 0-2.984 3-.974 8z"/><path d="M13.98 11S20.055 9.95 20 6.5c-.038-2.324-2.493-3.19-3.025-1.5c0 0-.505-2-2.017-2c-1.513 0-3 3-.977 8zM13 13.98l.062.309l.081.35l.075.29l.092.328l.11.358l.061.188l.139.392c.64 1.73 1.841 3.837 3.88 3.805c2.324-.038 3.19-2.493 1.5-3.025l.148-.045l.165-.058a4.13 4.13 0 0 0 .098-.039l.222-.098c.586-.28 1.367-.832 1.367-1.777c0-1.513-3-3-8-.977zM10.02 13l-.309.062l-.35.081l-.29.075l-.328.092l-.358.11l-.188.061l-.392.139c-1.73.64-3.837 1.84-3.805 3.88c.038 2.324 2.493 3.19 3.025 1.5l.045.148l.058.165l.039.098l.098.222c.28.586.832 1.367 1.777 1.367c1.513 0 3-3 .977-8zm.98-2.98l-.062-.309l-.081-.35l-.075-.29l-.092-.328l-.11-.358l-.128-.382l-.148-.399C9.646 5.917 8.46 3.97 6.5 4C4.176 4.038 3.31 6.493 5 7.025l-.148.045l-.164.058a4.13 4.13 0 0 0-.1.039l-.22.098C3.78 7.545 3 8.097 3 9.042c0 1.513 3 3 8 .977z"/>
+            </svg>
+            <span sec:authorize="isAuthenticated()"> Welcome </span>
+            <span sec:authorize="isAuthenticated()" sec:authentication="principal.username"></span>
+
+            <a th:href="@{/public/blog}" th:text="#{lt.lietuvosGamta.header.blog}" class="btn btn-outline-warning"></a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/blog/create}"
+               th:text="#{lt.lietuvosGamta.header.new.post}" class="btn btn-outline-warning" tabindex="-1"
+               role="button" aria-disabled="true"></a>
+            <a th:href="@{/public/user/create}" th:text="#{lt.lietuvosGamta.header.sign.up}"
+               class="btn btn-outline-warning" tabindex="-1" role="button" aria-disabled=true></a>
+            <a sec:authorize="hasRole('ROLE_USER')" th:href="@{/porn}" th:text="#{lt.lietuvosGamta.header.porn}"
+               class="btn btn-outline-danger" tabindex="-1" role="button" aria-disabled="true"></a>
+        </div>
+        <div>
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <select id="language-switcher"
+                            class="form-select form-select-sm"
+                            aria-label=".form-select-sm example">
+                        <option selected>Select language:</option>
+                        <option value="EN">English</option>
+                        <option value="LT">Lithuanian</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div th:fragment="inputWithError(fieldName, text, isFiedValid, type)"
+     class="mb-3">
+    <label th:for="${fieldName}"
+           class="form-label"
+           th:text="${text}"></label>
+    <input th:type="${type}"
+           class="form-control"
+           th:id="${fieldName}"
+           th:attr="aria-describedby=${fieldName + 'Feedback'}"
+           th:classappend="${#fields.hasErrors(fieldName)} ? 'is-invalid' : (${isFiedValid} ? 'is-valid' : '')"
+           th:field="*{__${fieldName}__}" required>
+    <div th:id="${fieldName + 'Feedback'}"
+         class="invalid-feedback"
+         th:if="${#fields.hasErrors(fieldName)}"
+         th:errors="*{__${fieldName}__}">
+    </div>
+</div>
+
+
+<footer th:fragment="footer" class=" py-3 my-4">
+    <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+    <p class="text-center text-muted">© 2023 Lithuanian nature is wonderful...</p>
+    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"></script>
+    <script th:src="@{/js/language-switcher.js}"></script>
+</footer>
+
+</body>
+</html>
